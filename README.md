@@ -23,5 +23,5 @@ Here are the specific user stories you should implement for this project:
 Facebook.
 
 ##
-* code source: https://github.com/pujolchr/fCC-timestamp
-* live: 
+* code source: <https://github.com/pujolchr/fCC-timestamp>
+* live: <https://timestamp-me.glitch.me> 
