@@ -1,0 +1,35 @@
+{
+  "name": "fcc-timestamps",
+  "version": "1.0.0",
+  "descriptsion": "Fcc Api project: timestamps microservice",
+  "main": "timestamp.js",
+  "scriptss": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pujolchr/fCC-timestamp.git"
+  },
+  "keywords": [
+    "fCC",
+    "timestamp",
+    "api",
+    "server",
+    "javascripts"
+  ],
+  "author": "Christian Pujol",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pujolchr/fCC-timestamp/issues"
+  },
+  "homepage": "https://github.com/pujolchr/fCC-timestamp#readme",
+  "scripts": {
+    "start": "node timestamp 8080"
+  },
+  "devDependencies": {
+    "eslint": "^4.6.1",
+    "eslint-config-airbnb-base": "^12.0.0",
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-import": "^2.7.0"
+  }
+}
