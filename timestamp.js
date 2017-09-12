@@ -5,6 +5,7 @@
 const path = require('path');
 const url = require('url');
 const http = require('http');
+const fs = require('fs');
 
 if (process.argv.length !== 3) {
   process.stderr.write(`usage: ${path.basename(process.argv[1])} port\n`);
@@ -20,36 +21,42 @@ const sendResponse = (r, data) => {
 const server = http.createServer((req, res) => {
   // parse the url
   const URL = url.parse(req.url, true);
-  let api = URL.pathname.replace(/^\//, '');
-  api = decodeURI(api);
-
-  // get the time stamp
-  let timestamp;
-  if (/^\d+$/.test(api)) {
-    // unix time -> seconds but javascript Date-> milliseconds
-    timestamp = parseInt(api, 10) * 1000;
+  if (URL.pathname === '/') {
+    res.writeHead(200, { 'content-type': 'text/html' });
+    fs.createReadStream('./index.html').pipe(res);
   } else {
-    timestamp = Date.parse(api);
+    console.log(URL);
+    let api = URL.pathname.replace(/^\//, '');
+    api = decodeURI(api);
+
+    // get the time stamp
+    let timestamp;
+    if (/^\d+$/.test(api)) {
+      // unix time -> seconds but javascript Date-> milliseconds
+      timestamp = parseInt(api, 10) * 1000;
+    } else {
+      timestamp = Date.parse(api);
+    }
+
+    const payload = {};
+
+    // check if valid time
+    if (Number.isNaN(timestamp)) {
+      payload.unix = null;
+      payload.natural = null;
+    } else {
+      // build pay load
+      const date = new Date(timestamp);
+      payload.unix = date.getTime() / 1000;
+      payload.natural = date.toLocaleString('en', {
+        month: 'long',
+        day: '2-digit',
+        year: 'numeric',
+      });
+    }
+
+    sendResponse(res, payload);
   }
-
-  const payload = {};
-
-  // check if valid time
-  if (Number.isNaN(timestamp)) {
-    payload.unix = null;
-    payload.natural = null;
-  } else {
-    // build pay load
-    const date = new Date(timestamp);
-    payload.unix = date.getTime() / 1000;
-    payload.natural = date.toLocaleString('en', {
-      month: 'long',
-      day: '2-digit',
-      year: 'numeric',
-    });
-  }
-
-  sendResponse(res, payload);
 });
 
 server.listen(process.argv[2]);
